@@ -1,10 +1,10 @@
 <?php
-namespace Orm\Controller\HomeController;
+namespace OrmTalk\Controller;
 
 class HomeController
 {
     public function index()
     {
-        echo 'Home';
+        return 'Home';
     }
 }

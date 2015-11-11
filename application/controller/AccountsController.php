@@ -1,5 +1,7 @@
 <?php
-namespace OrmTalk\Controller\AccountsController;
+namespace OrmTalk\Controller;
+
+use OrmTalk\Model\DataMapper\AccountsMapper;
 
 class AccountsController
 {
@@ -8,8 +10,11 @@ class AccountsController
 
     }
 
-    public function get()
+    public function get($id)
     {
+        $accountMapper = new AccountsMapper;
+        $account = $accountMapper->getFromId($id);
 
+        return $account->toArray;
     }
 }

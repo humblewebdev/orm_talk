@@ -1,5 +1,6 @@
 <?php
-use Dortrine\ORM\Tools\Setup;
+
+use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Events\Dispatcher;
@@ -17,7 +18,7 @@ $dbParams = [
     'port' => '3307'
 ];
 
-$config = Setup::creatAnnotationMetdataConfiguration([__DIR__."/src"], $isDevMode);
+$config = Setup::createAnnotationMetadataConfiguration([__DIR__."/config/yaml"], $isDevMode);
 $EntityManager = EntityManager::create($dbParams, $config);
 
 $capsule = new Capsule;
@@ -29,4 +30,3 @@ $capsule->setEventDispatcher(new Dispatcher(new Container));
 $capsule->setAsGlobal();
 
 $capsule->bootEloquent();
-

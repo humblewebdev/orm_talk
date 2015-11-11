@@ -16,6 +16,8 @@ class DataMapperController
 
         $account = $accountMapper->getFromId($accountId);
 
-        return $account->toArray();
+        return [
+            'DataMapper' => $account->toArray()
+        ];
     }
 }

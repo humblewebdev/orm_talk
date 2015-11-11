@@ -4,8 +4,10 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(-1);
 
-require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . 'bootstap.php';
+$loader = require_once __DIR__ . '/../vendor/autoload.php';
+$loader->register();
+
+require_once __DIR__.'/bootstrap.php';
 
 
 use Symfony\Component\Routing\Matcher\UrlMatcher;
@@ -22,7 +24,7 @@ $collection->add(
     new Route(
         '/',
         array(
-            'controller' => 'OrmTalk/Controller/HomeController',
+            'controller' => 'OrmTalk\Controller\HomeController',
             'action' => 'index'
         )
     )
@@ -82,12 +84,12 @@ $response = new JsonResponse();
 
 $attributes = $matcher->match($request->getPathInfo());
 
-var_dump($request->query->all()); die();
+$controller = new $attributes['controller'];
 
 $response->setData(
-    call_user_func_array(
-        [$attributes['controller'], $attributes['action']],
-        [array_slice($attributes, 2)]
+    call_user_func(
+        [$controller, $attributes['action']],
+        [array_slice($attributes, 2, count($attributes) - 3)]
     )
 );
 

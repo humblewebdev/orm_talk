@@ -1,13 +1,9 @@
 <?php
-namespace WpEngine\Model;
+namespace OrmTalk\Model\DataMapper;
 
 use ORMTalk\Orm\MapperAbstract;
 use ORMTalk\Orm\DomainObjectAbstract;
-use League\Csv\Reader;
-use Exception;
-use GuzzleHttp\Client as Guzzle;
-use GuzzleHttp\Message\Request;
-use GuzzleHttp\Message\Response;
+use Illuminate\Database\Capsule\Manger as Capsule;
 
 class AccountsMapper extends MapperAbstract
 {
@@ -18,19 +14,18 @@ class AccountsMapper extends MapperAbstract
 
     public function populate(DomainObjectAbstract $obj, array $data)
     {
-        $obj->setId(isset($data['Account ID']) ? $data['Account ID'] : null);
-        $obj->accountName = (isset($data['Account Name']) ? $data['Account Name'] : null);
-        $obj->status = isset($data['status']) ? $data['status'] : null;
-        $obj->creation = isset($data['Created On'])? $data['Created On'] : null;
-
+        $obj->id = $data['id'];
+        $obj->user_id = $data['user_id'];
+        $obj->status  = $data['status'];
         return $obj;
     }
 
     public function getFromId($id)
     {
-        $data = $this->getCsv($id);
+        $data = Capsule::table('accounts')->where('user_id', $id)
+            ->first();
 
-        return $this->create($data);
+        return $this->create((array) $data);
     }
 
     public function insert(DomainObjectAbstract $obj)
@@ -46,39 +41,4 @@ class AccountsMapper extends MapperAbstract
     {
     }
 
-    private function getStatus($accountId)
-    {
-        $client = new Guzzle(
-            [
-                'base_uri' => 'https://interview.wpengine.io/v1/'
-            ]
-        );
-
-        $res = $client->get('accounts/' . $accountId);
-        if ($res->getStatusCode() == '200') {
-            $contents = $res->getBody()->getContents();
-            return $contents;
-        }
-    }
-
-    private function getCsv($id = null)
-    {
-        $csv = Reader::createFromPath(__DIR__ . '/../asset/input.csv');
-
-        $headers = $csv->fetchOne();
-
-        $accounts = $csv->setOffset(1)->fetchAssoc($headers);
-
-        if ($id) {
-            foreach ($accounts as $key => $value) {
-
-                if ($id['account_id'] == $value['Account ID']) {
-                    return $accounts[$key];
-                }
-            }
-            throw new Exception('Account doesn\'t exist');
-        }
-
-        return $accounts;
-    }
 }

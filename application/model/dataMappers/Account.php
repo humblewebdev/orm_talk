@@ -7,15 +7,15 @@ class Account extends DomainObjectAbstract
 {
 
     public $id;
+    public $user_id;
     public $status;
-    public $created;
 
     public function toArray()
     {
         return   [
             'account_id' => $this->id,
+            'user_id' => $this->user_id,
             'status' => $this->status,
-            'created_on' => $this->creation
         ];
     }
 

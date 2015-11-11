@@ -4,8 +4,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(-1);
 
-$loader = require_once __DIR__ . '/../vendor/autoload.php';
-$loader->register();
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . 'bootstap.php';
+
 
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;

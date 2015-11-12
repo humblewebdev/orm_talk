@@ -1,21 +1,25 @@
 <?php
-namespace ORMTalk\Model;
+namespace ORMTalk\Model\DataMapper;
 
-use ORMTalk\Orm\DomainObjectAbstract;
+use OrmTalk\Orm\DomainObjectAbstract;
 
 class Account extends DomainObjectAbstract
 {
 
     public $id;
+    public $user_id;
     public $status;
+    public $last_updated;
     public $created;
 
     public function toArray()
     {
         return   [
-            'account_id' => $this->id,
+            'id' => $this->id,
+            'user_id' => $this->user_id,
             'status' => $this->status,
-            'created_on' => $this->creation
+            'last_updated' => $this->last_updated,
+            'created' => $this->created
         ];
     }
 

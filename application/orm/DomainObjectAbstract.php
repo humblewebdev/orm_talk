@@ -1,5 +1,5 @@
 <?php
-namespace ORMTalk\Orm;
+namespace OrmTalk\Orm;
 
 abstract class DomainObjectAbstract
 {

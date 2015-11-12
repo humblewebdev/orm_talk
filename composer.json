@@ -1,18 +1,20 @@
 {
     "require": {
-        "guzzlehttp/guzzle": "~6.1",
-        "symfony/routing": "~2.7",
         "symfony/http-foundation": "^2.7",
-        "symfony/dependency-injection": "^2.7",
         "league/flysystem": "^1.0",
-        "league/csv": "^7.1",
         "illuminate/database": "^5.1",
-        "doctrine/orm": "^2.5"
+        "doctrine/orm": "^2.5",
+        "symfony/yaml": "2.*",
+        "illuminate/events": "^5.1",
+        "symfony/routing": "^2.7"
     },
     "autoload": {
         "psr-4": {
             "OrmTalk\\Controller\\": "application/controller/",
-            "OrmTalk\\Model\\": "application/model/",
+            "OrmTalk\\Model\\DataMapper\\": "application/model/dataMapper/",
+            "OrmTalk\\Model\\ActiveRecord\\": "application/model/activeRecord",
+            "OrmTalk\\Model\\Doctrine\\": "application/model/doctrine",
+            "OrmTalk\\Model\\Eloquent\\": "application/model/eloquent",
             "OrmTalk\\Orm\\": "application/orm/"
         }
     }

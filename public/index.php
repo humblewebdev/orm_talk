@@ -7,6 +7,9 @@ error_reporting(-1);
 $loader = require_once __DIR__ . '/../vendor/autoload.php';
 $loader->register();
 
+require_once __DIR__.'/bootstrap.php';
+
+
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
@@ -17,22 +20,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 $collection = new RouteCollection();
 
 $collection->add(
-    'home',
-    new Route(
-        '/',
-        array(
-            'controller' => 'OrmTalk/Controller/HomeController',
-            'action' => 'index'
-        )
-    )
-);
-
-$collection->add(
     'all_accounts',
     new Route(
         '/accounts',
         array(
-            'controller' => 'OrmTalk\Controller\AccountController',
+            'controller' => 'OrmTalk\Controller\AccountsController',
             'action' => 'all'
         )
     )
@@ -49,28 +41,6 @@ $collection->add(
     )
 );
 
-$collection->add(
-    'all_users',
-    new Route(
-        '/users',
-        array(
-            'controller' => 'OrmTalk\Controller\UsersController',
-            'action' => 'all'
-        )
-    )
-);
-
-$collection->add(
-    'each_user',
-    new Route(
-        '/users/{user_id}',
-        array(
-            'controller' => 'OrmTalk\Controller\UsersController',
-            'action' => 'get'
-        )
-    )
-);
-
 $context = new RequestContext();
 $request = Request::createFromGlobals();
 $context->fromRequest($request);
@@ -81,12 +51,12 @@ $response = new JsonResponse();
 
 $attributes = $matcher->match($request->getPathInfo());
 
-var_dump($request->query->all()); die();
+$controller = new $attributes['controller'];
 
 $response->setData(
     call_user_func_array(
-        [$attributes['controller'], $attributes['action']],
-        [array_slice($attributes, 2)]
+        [$controller, $attributes['action']],
+        array_slice($attributes, 2, count($attributes) - 3)
     )
 );
 

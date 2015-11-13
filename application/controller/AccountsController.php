@@ -52,7 +52,7 @@ class AccountsController
     {
         $account = $GLOBALS['entityManager']->find('OrmTalk\Model\Doctrine\Account', $user_id);
 
-        return $account;
+        return $account->toArray();
     }
 
     private function eloquent($user_id)

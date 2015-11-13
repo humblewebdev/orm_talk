@@ -17,7 +17,10 @@ $dbParams = [
     'port' => '3307'
 ];
 
-$config = Setup::createAnnotationMetadataConfiguration([__DIR__."/../application/model/doctrine"], $isDevMode);
+$config = Setup::createAnnotationMetadataConfiguration(
+    [__DIR__ . "/../application/model/doctrine"],
+    $isDevMode
+);
 $entityManager = EntityManager::create($dbParams, $config);
 
 $capsule = new Capsule;
